@@ -1,12 +1,11 @@
 {
-  "name": "playwright",
-  "version": "1.12.3",
-  "description": "A high-level API to automate web browsers",
-  "repository": "github:Microsoft/playwright",
+  "name": "@recordreplay/playwright",
+  "version": "1.12.0",
+  "description": "Replay enabled Playwright fork",
+  "repository": "https://github.com/RecordReplay/playwright",
   "engines": {
     "node": ">=12"
   },
-  "homepage": "https://playwright.dev",
   "main": "index.js",
   "bin": {
     "playwright": "./lib/cli/cli.js"
@@ -20,9 +19,6 @@
   },
   "scripts": {
     "install": "node install.js"
-  },
-  "author": {
-    "name": "Microsoft Corporation"
   },
   "license": "Apache-2.0",
   "dependencies": {
