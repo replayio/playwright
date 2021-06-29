@@ -28,10 +28,10 @@ async function replayInstall() {
   console.log("Installing replay browsers...");
   switch (process.platform) {
     case "darwin":
-      await installReplayBrowser("macOS-replay-playwright.tar.xz");
+      await installReplayBrowser("macOS-replay-playwright.tar.xz", "firefox", "firefox");
       break;
     case "linux":
-      await installReplayBrowser("linux-replay-playwright.tar.xz");
+      await installReplayBrowser("linux-replay-playwright.tar.xz", "firefox", "firefox");
       await installReplayBrowser("linux-replay-chromium.tar.xz", "replay-chromium", "chrome-linux");
       break;
   }
@@ -39,8 +39,12 @@ async function replayInstall() {
 }
 
 async function installReplayBrowser(name, srcName, dstName) {
-  const contents = await downloadReplayFile(name);
   const replayDir = process.env.RECORD_REPLAY_DIRECTORY || `${process.env.HOME}/.replay`;
+  if (fs.existsSync(`${replayDir}/playwright/${dstName}`)) {
+    return;
+  }
+
+  const contents = await downloadReplayFile(name);
 
   for (const dir of [replayDir, `${replayDir}/playwright`]) {
     if (!fs.existsSync(dir)) {
@@ -51,7 +55,7 @@ async function installReplayBrowser(name, srcName, dstName) {
   spawnSync("tar", ["xf", name], { cwd: `${replayDir}/playwright` });
   fs.unlinkSync(`${replayDir}/playwright/${name}`);
 
-  if (srcName && dstName) {
+  if (srcName != dstName) {
     fs.renameSync(`${replayDir}/playwright/${srcName}`, `${replayDir}/playwright/${dstName}`);
   }
 }
