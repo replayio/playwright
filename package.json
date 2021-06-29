@@ -1,6 +1,6 @@
 {
   "name": "@recordreplay/playwright",
-  "version": "1.10.2",
+  "version": "1.10.3",
   "description": "Replay enabled Playwright fork",
   "repository": "https://github.com/RecordReplay/playwright",
   "engines": {
