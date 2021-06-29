@@ -3,31 +3,21 @@
   "browsers": [
     {
       "name": "chromium",
-      "revision": "888113",
+      "revision": "857950",
       "installByDefault": true
     },
     {
       "name": "firefox",
-      "revision": "1271",
+      "revision": "1238",
       "installByDefault": true
     },
     {
-      "name": "firefox-beta",
-      "revision": "1260",
-      "installByDefault": false
-    },
-    {
       "name": "webkit",
-      "revision": "1492",
+      "revision": "1446",
       "installByDefault": true,
       "revisionOverrides": {
-        "mac10.14": "1446"
+        "mac10.14": "1443"
       }
-    },
-    {
-      "name": "webkit-technology-preview",
-      "revision": "1443",
-      "installByDefault": false
     },
     {
       "name": "ffmpeg",
