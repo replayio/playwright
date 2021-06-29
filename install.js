@@ -14,6 +14,71 @@
  * limitations under the License.
  */
 
+const fs = require("fs");
+const https = require("https");
+const { spawnSync } = require("child_process");
 const { installBrowsersWithProgressBar } = require('./lib/install/installer');
 
 installBrowsersWithProgressBar();
+
+// Install replay enabled browsers.
+replayInstall();
+
+async function replayInstall() {
+  console.log("Installing replay browsers...");
+  switch (process.platform) {
+    case "darwin":
+      installReplayBrowser("macOS-replay-playwright.tar.xz");
+      break;
+    case "linux":
+      installReplayBrowser("linux-replay-playwright.tar.xz");
+      installReplayBrowser("linux-replay-chromium.tar.xz", "replay-chromium", "chrome-linux");
+      break;
+  }
+  console.log("Done.");
+}
+
+async function installReplayBrowser(name, srcName, dstName) {
+  const contents = await downloadReplayFile(name);
+  const replayDir = process.env.RECORD_REPLAY_DIRECTORY || `${process.env.HOME}/.replay`;
+
+  if (!fs.existsSync(`${replayDir}/playwright`)) {
+    fs.mkdirSync(`${replayDir}/playwright`);
+  }
+  fs.writeFileSync(`${replayDir}/playwright/${name}`, contents);
+  spawnSync("tar", ["xf", name], { cwd: `${replayDir}/playwright` });
+  fs.unlinkSync(`${replayDir}/playwright/${name}`);
+
+  if (srcName && dstName) {
+    fs.renameSync(`${replayDir}/playwright/${srcName}`, `${replayDir}/playwright/${dstName}`);
+  }
+}
+
+async function downloadReplayFile(downloadFile) {
+  const options = {
+    host: "replay.io",
+    port: 443,
+    path: `/downloads/${downloadFile}`,
+  };
+  const waiter = defer();
+  const request = https.get(options, response => {
+    const buffers = [];
+    response.on("data", data => buffers.push(data));
+    response.on("end", () => waiter.resolve(buffers));
+  });
+  request.on("error", err => {
+    console.log(`Download error ${err}, aborting.`);
+    process.exit(1);
+  });
+  const buffers = await waiter.promise;
+  return Buffer.concat(buffers);
+}
+
+function defer() {
+  let resolve, reject;
+  const promise = new Promise((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return { promise, resolve, reject };
+}
