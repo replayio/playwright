@@ -22,7 +22,9 @@ const { installBrowsersWithProgressBar } = require('./lib/install/installer');
 installBrowsersWithProgressBar();
 
 // Install replay enabled browsers.
-replayInstall();
+if (!process.env.PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD) {
+  replayInstall();
+}
 
 async function replayInstall() {
   console.log("Installing replay browsers...");
