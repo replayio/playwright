@@ -68,18 +68,32 @@ async function downloadReplayFile(downloadFile) {
     port: 443,
     path: `/downloads/${downloadFile}`,
   };
-  const waiter = defer();
-  const request = https.get(options, response => {
-    const buffers = [];
-    response.on("data", data => buffers.push(data));
-    response.on("end", () => waiter.resolve(buffers));
-  });
-  request.on("error", err => {
-    console.log(`Download error ${err}, aborting.`);
-    process.exit(1);
-  });
-  const buffers = await waiter.promise;
-  return Buffer.concat(buffers);
+
+  for (let i = 0; i < 5; i++) {
+    const waiter = defer();
+    const request = https.get(options, response => {
+      if (response.statusCode != 200) {
+        console.log(`Download received status code ${response.statusCode}, retrying...`);
+        request.destroy();
+        waiter.resolve(null);
+        return;
+      }
+      const buffers = [];
+      response.on("data", data => buffers.push(data));
+      response.on("end", () => waiter.resolve(buffers));
+    });
+    request.on("error", err => {
+      console.log(`Download error ${err}, retrying...`);
+      request.destroy();
+      waiter.resolve(null);
+    });
+    const buffers = await waiter.promise;
+    if (buffers) {
+      return Buffer.concat(buffers);
+    }
+  }
+
+  throw new Error("Download failed, giving up");
 }
 
 function defer() {
