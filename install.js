@@ -64,7 +64,7 @@ async function installReplayBrowser(name, srcName, dstName) {
 
 async function downloadReplayFile(downloadFile) {
   const options = {
-    host: "replay.io",
+    host: "static.replay.io",
     port: 443,
     path: `/downloads/${downloadFile}`,
   };
