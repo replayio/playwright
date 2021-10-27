@@ -17,9 +17,9 @@
 const fs = require("fs");
 const https = require("https");
 const { spawnSync } = require("child_process");
-const { installBrowsersWithProgressBar } = require("./lib/install/installer");
+const { installBrowsersWithProgressBar } = require('./lib/install/installer');
 
-installBrowsersWithProgressBar().catch((err) => {
+installBrowsersWithProgressBar().catch(err => {
   console.warn("WARNING: Unable to install default Playwright browsers");
 });
 
@@ -32,31 +32,18 @@ async function replayInstall() {
   console.log("Installing replay browsers...");
   switch (process.platform) {
     case "darwin":
-      await installReplayBrowser(
-        "macOS-replay-playwright.tar.xz",
-        "firefox",
-        "firefox"
-      );
+      await installReplayBrowser("macOS-replay-playwright.tar.xz", "firefox", "firefox");
       break;
     case "linux":
-      await installReplayBrowser(
-        "linux-replay-playwright.tar.xz",
-        "firefox",
-        "firefox"
-      );
-      await installReplayBrowser(
-        "linux-replay-chromium.tar.xz",
-        "replay-chromium",
-        "chrome-linux"
-      );
+      await installReplayBrowser("linux-replay-playwright.tar.xz", "firefox", "firefox");
+      await installReplayBrowser("linux-replay-chromium.tar.xz", "replay-chromium", "chrome-linux");
       break;
   }
   console.log("Done.");
 }
 
 async function installReplayBrowser(name, srcName, dstName) {
-  const replayDir =
-    process.env.RECORD_REPLAY_DIRECTORY || `${process.env.HOME}/.replay`;
+  const replayDir = process.env.RECORD_REPLAY_DIRECTORY || `${process.env.HOME}/.replay`;
   if (fs.existsSync(`${replayDir}/playwright/${dstName}`)) {
     return;
   }
@@ -73,10 +60,7 @@ async function installReplayBrowser(name, srcName, dstName) {
   fs.unlinkSync(`${replayDir}/playwright/${name}`);
 
   if (srcName != dstName) {
-    fs.renameSync(
-      `${replayDir}/playwright/${srcName}`,
-      `${replayDir}/playwright/${dstName}`
-    );
+    fs.renameSync(`${replayDir}/playwright/${srcName}`, `${replayDir}/playwright/${dstName}`);
   }
 }
 
@@ -89,20 +73,18 @@ async function downloadReplayFile(downloadFile) {
 
   for (let i = 0; i < 5; i++) {
     const waiter = defer();
-    const request = https.get(options, (response) => {
+    const request = https.get(options, response => {
       if (response.statusCode != 200) {
-        console.log(
-          `Download received status code ${response.statusCode}, retrying...`
-        );
+        console.log(`Download received status code ${response.statusCode}, retrying...`);
         request.destroy();
         waiter.resolve(null);
         return;
       }
       const buffers = [];
-      response.on("data", (data) => buffers.push(data));
+      response.on("data", data => buffers.push(data));
       response.on("end", () => waiter.resolve(buffers));
     });
-    request.on("error", (err) => {
+    request.on("error", err => {
       console.log(`Download error ${err}, retrying...`);
       request.destroy();
       waiter.resolve(null);
