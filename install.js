@@ -19,7 +19,9 @@ const https = require("https");
 const { spawnSync } = require("child_process");
 const { installBrowsersWithProgressBar } = require('./lib/install/installer');
 
-installBrowsersWithProgressBar();
+installBrowsersWithProgressBar().catch(err => {
+  console.warn("WARNING: Unable to install default Playwright browsers");
+});
 
 // Install replay enabled browsers.
 if (!process.env.PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD) {
