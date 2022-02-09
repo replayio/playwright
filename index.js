@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
+require('./recordreplay/patch');
 require('./lib/utils/verifyNodeJsVersion');
 module.exports = require('./lib/inprocess');

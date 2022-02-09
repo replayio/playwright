@@ -1,14 +1,11 @@
 {
-  "name": "playwright-core",
+  "name": "@recordreplay/playwright",
   "version": "1.18.1",
   "description": "A high-level API to automate web browsers",
-  "repository": "github:Microsoft/playwright",
+  "repository": "github:RecordReplay/playwright",
   "homepage": "https://playwright.dev",
   "engines": {
     "node": ">=12"
-  },
-  "scripts": {
-    "prepare": "babel --config-file ../../babel.config.json -s --extensions \".ts\" --out-dir lib/utils/ src/utils"
   },
   "author": {
     "name": "Microsoft Corporation"
@@ -33,7 +30,7 @@
   },
   "types": "types/types.d.ts",
   "bin": {
-    "playwright": "./cli.js"
+    "replay-playwright": "./cli.js"
   },
   "dependencies": {
     "commander": "^8.2.0",
