@@ -14,4 +14,5 @@
  * limitations under the License.
  */
 
+require('./lib/utils/verifyNodeJsVersion');
 module.exports = require('./lib/inprocess');
