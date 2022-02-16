@@ -4,6 +4,8 @@ const { install } = require("./install");
 
 const EXECUTABLE_PATHS = {
   "darwin:firefox": ["firefox", "Nightly.app", "Contents", "MacOS", "firefox"],
+  "linux:chromium": ["chrome-linux", "chrome"],
+  "linux:firefox": ["firefox", "firefox"],
 };
 
 function getExecutableEntry(name) {
