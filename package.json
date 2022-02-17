@@ -1,6 +1,6 @@
 {
   "name": "@recordreplay/playwright",
-  "version": "1.18.2",
+  "version": "1.18.3",
   "description": "A high-level API to automate web browsers",
   "repository": "github:RecordReplay/playwright",
   "homepage": "https://playwright.dev",

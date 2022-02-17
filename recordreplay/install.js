@@ -40,7 +40,7 @@ async function install(browserName) {
   await installReplayBrowser(...args);
 }
 
-async function installAll() {
+async function replayInstall() {
   console.log("Installing Replay browsers...");
   try {
     switch (process.platform) {
