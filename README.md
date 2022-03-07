@@ -12,7 +12,7 @@ This is an alternative to Playwright that uses Replay-enabled browsers where pos
 
 **In addition to this package, you'll also need to install:**
 
-1. [`@recordreplay/replay-recordings`](https://github.com/RecordReplay/recordings-cli) to manage and upload replays.
+1. [`@recordreplay/recordings-cli`](https://github.com/RecordReplay/recordings-cli) to manage and upload replays.
 2. [`@recordreplay/playwright-config`](https://github.com/RecordReplay/playwright-config) to configure Playwright to use the Replay-enabled browsers.
 
 
@@ -57,13 +57,13 @@ Run `npx playwright test` as usual to execute the tests and record with Replay.
 #### Notes
 
 - Replay will create a recording for each individual test.
-- You will need to upload your recordings with the `replay-recordings` CLI.
+- You will need to upload your recordings with using the recordings CLI.
 
 For example, the following command will upload the last test recording to your Replay Library:
 
 `RECORD_REPLAY_API_KEY=123 npx replay-recordings view-latest`
 
-For other commands, see the [@recordreplay/replay-recordings](https://github.com/RecordReplay/recordings-cli) documentation.
+For other commands, see the [@recordreplay/recordings-cli](https://github.com/RecordReplay/recordings-cli) documentation.
 
 ### As a Node script
 
@@ -94,7 +94,7 @@ const { getExecutablePath } = require("@recordreplay/playwright-config");
 })();
 ```
 
-You can then use `node firefox.spec.js` to execute and record your test. This will generate a single recording of all the test code in the file. Use [@recordreplay/replay-recordings](https://github.com/RecordReplay/recordings-cli) to manage and upload recordings.
+You can then use `node firefox.spec.js` to execute and record your test. This will generate a single recording of all the test code in the file. Use [@recordreplay/recordings-cli](https://github.com/RecordReplay/recordings-cli) to manage and upload recordings.
 
 You can still use `expect` from `@playwright/test` in your test code. Import the command directly like in the example below.
 
